@@ -5,6 +5,7 @@ pragma solidity ^0.8.19;
 contract AttendanceContract {
     struct AttendanceRecord {
         uint employeeId;
+        uint index;
         uint checkInTime;
         string details;
     }
@@ -32,7 +33,10 @@ contract AttendanceContract {
         if (authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]){
             return;
         }
-        attendanceRecords[_employeeId].push(AttendanceRecord(_employeeId, _checkInTime, _details));
+
+        uint _index = attendanceRecords[_employeeId].length;
+        attendanceRecords[_employeeId].push(AttendanceRecord(_employeeId, _index, _checkInTime, _details));
+
         emit AttendanceRecorded(_employeeId, _checkInTime, _details);
     }
 
@@ -56,12 +60,6 @@ contract AttendanceContract {
         attendanceRecords[_employeeId][_index].checkInTime = _newCheckInTime;
         attendanceRecords[_employeeId][_index].details = _newDetails;
         emit AttendanceUpdated(_employeeId, _index, _newCheckInTime, _newDetails);
-    }
-
-    function getEmployeeID() public onlyAuthorized view returns (uint _emID){
-        require(authorizedEntities[msg.sender] != 0, "Unauthorized access");
-
-        return authorizedEntities[msg.sender];
     }
 
     function authorizeEntity(address _entity) public onlyAuthorized {

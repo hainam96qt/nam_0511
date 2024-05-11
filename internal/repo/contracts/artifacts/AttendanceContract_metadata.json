@@ -162,19 +162,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getEmployeeID",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "_emID",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -267,11 +254,11 @@
 	},
 	"sources": {
 		"internal/repo/contracts/Fcontract.sol": {
-			"keccak256": "0x371ffd3d800e3f5ea90ebf19f4ac4b1b5cffb3a72caf8ef5258b8fdf5b80cad9",
+			"keccak256": "0xbecf0656fe2ebf7d6d91042635d751a893ed41c10de928778049a93243412807",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9441adc4c982317b13ffbc93b5f9d732818642c74493c81cbf10e563b3cb154b",
-				"dweb:/ipfs/QmUgPa3N6RpWVWXFvYe9UUFy3YNVkRzoZY4bq6FdQBFfLz"
+				"bzz-raw://c8e9ad31689da3c89de1e032eec1312b90e353415f4f0846c1433a0b6d644eb5",
+				"dweb:/ipfs/QmSQ5ftweZA2PPeu3pdpZ6wpu3hPsgW9JHgoKeV6g7EN2s"
 			]
 		}
 	},
