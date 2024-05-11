@@ -4,7 +4,7 @@ import (
 	"context"
 	"math/big"
 	"nam_0511/internal/model"
-	"nam_0511/internal/repo/contracts"
+	"nam_0511/internal/repo/contracts/attendance"
 	"time"
 )
 
