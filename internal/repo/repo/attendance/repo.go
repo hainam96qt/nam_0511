@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"log"
 	"math/big"
-	"nam_0511/internal/repo/contracts"
+	"nam_0511/internal/repo/contracts/attendance"
 	"nam_0511/pkg/smartcontract"
 	"nam_0511/pkg/util/random"
 )
@@ -49,13 +49,41 @@ func (r *Repository) CheckIn(ctx context.Context, req *contracts.AttendanceContr
 		return err
 	}
 
-	tx, err := contract.RecordAttendance(auth, req.EmployeeId, req.CheckInTime, req.Details)
+	_, err = contract.CheckIn(auth, req.EmployeeId, req.CheckInTime, req.Details)
 	if err != nil {
 		return err
 	}
 
-	// quan ly giao dich
-	_ = tx
+	return nil
+}
+
+func (r *Repository) CheckOut(ctx context.Context, req *contracts.AttendanceContractAttendanceRecord) error {
+	contractAddress := common.HexToAddress(r.config.ContractAddress)
+
+	_, err := r.ethClient.CodeAt(context.Background(), contractAddress, nil)
+	if err != nil {
+		return err
+	}
+
+	contract, err := contracts.NewContracts(contractAddress, r.ethClient)
+	if err != nil {
+		return err
+	}
+
+	privateKey, err := crypto.HexToECDSA(r.config.PrivateKey)
+	if err != nil {
+		return err
+	}
+
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1337))
+	if err != nil {
+		return err
+	}
+
+	_, err = contract.CheckOut(auth, req.EmployeeId, req.Index, req.CheckOutTime, req.Details)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -80,7 +108,41 @@ func (r *Repository) GetListAttendanceByUserID(ctx context.Context, userID int64
 	return data, nil
 }
 
-func (r *Repository) AuthorizeEntity(ctx context.Context) (string, error) {
+func (r *Repository) UpdateAttendanceTime(ctx context.Context, c contracts.AttendanceContractAttendanceRecord) error {
+	contractAddress := common.HexToAddress(r.config.ContractAddress)
+
+	_, err := r.ethClient.CodeAt(context.Background(), contractAddress, nil)
+	if err != nil {
+		return err
+	}
+
+	contract, err := contracts.NewContracts(contractAddress, r.ethClient)
+	if err != nil {
+		return err
+	}
+
+	privateKey, err := crypto.HexToECDSA(r.config.PrivateKey)
+	if err != nil {
+		return err
+	}
+
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1337))
+	if err != nil {
+		return err
+	}
+
+	tx, err := contract.UpdateCheckIn(auth, c.EmployeeId, c.Index, c.CheckInTime, c.Details)
+	if err != nil {
+		return err
+	}
+
+	// quan ly giao dich
+	_ = tx
+
+	return nil
+}
+
+func (r *Repository) AuthorizeEntity(ctx context.Context, userID int) (string, error) {
 	contractAddress := common.HexToAddress(r.config.ContractAddress)
 
 	contract, err := contracts.NewContracts(contractAddress, r.ethClient)
@@ -110,7 +172,7 @@ func (r *Repository) AuthorizeEntity(ctx context.Context) (string, error) {
 		log.Fatal(err)
 	}
 
-	tx, err := contract.AuthorizeEntity(auth, sender)
+	tx, err := contract.AuthorizeEntity(auth, sender, big.NewInt(int64(userID)))
 	if err != nil {
 		log.Fatal(err)
 	}
