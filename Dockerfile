@@ -9,8 +9,8 @@ FROM alpine:3.16
 
 WORKDIR /app
 
-COPY --from=go_builder ./app/run ./nam-0801
+COPY --from=go_builder ./app/run ./nam-0511
 
-RUN chmod +x /app/nam-0801
+RUN chmod +x /app/nam-0511
 
-CMD ["/app/nam-0801"]
+CMD ["/app/nam-0511"]
