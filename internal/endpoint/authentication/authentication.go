@@ -4,10 +4,10 @@ import (
 	"context"
 	"github.com/go-chi/chi/v5"
 	"log"
-	"nam_0801/internal/model"
-	error2 "nam_0801/pkg/error"
-	"nam_0801/pkg/util/request"
-	"nam_0801/pkg/util/response"
+	"nam_0511/internal/model"
+	error2 "nam_0511/pkg/error"
+	"nam_0511/pkg/util/request"
+	"nam_0511/pkg/util/response"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ type (
 	}
 
 	AuthenticationService interface {
-		Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse2, error)
+		Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse, error)
 	}
 )
 
@@ -30,6 +30,14 @@ func InitAuthenticationHandler(r *chi.Mux, authSvc AuthenticationService) {
 	})
 }
 
+// @Summary Login
+// @Description Login by email and password
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body model.LoginRequest true "Login"
+// @Success 200 {object} model.LoginResponse
+// @Router /api/login [post]
 func (e *Endpoint) login(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

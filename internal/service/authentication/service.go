@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"github.com/dgrijalva/jwt-go"
-	"nam_0801/internal/model"
-	db "nam_0801/internal/repo/dbmodel"
-	configs "nam_0801/pkg/config"
-	error2 "nam_0801/pkg/error"
-	"nam_0801/pkg/util/password"
+	"nam_0511/internal/model"
+	db "nam_0511/internal/repo/dbmodel"
+	configs "nam_0511/pkg/config"
+	error2 "nam_0511/pkg/error"
+	"nam_0511/pkg/util/password"
 	"net/http"
 	"time"
 )
@@ -34,7 +34,7 @@ func NewAuthenticationService(DatabaseConn *sql.DB, cfg configs.Token, userRepo 
 	}
 }
 
-func (s *Service) Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse2, error) {
+func (s *Service) Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse, error) {
 	user, err := s.userRepo.GetUserByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (s *Service) Login(ctx context.Context, req *model.LoginRequest) (*model.Lo
 	if err != nil {
 		return nil, err
 	}
-	return &model.LoginResponse2{Token: token}, nil
+	return &model.LoginResponse{Token: token}, nil
 }
 
 func (s *Service) generateJWT(userID int32) (string, error) {

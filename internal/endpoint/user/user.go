@@ -4,10 +4,10 @@ import (
 	"context"
 	"github.com/go-chi/chi/v5"
 	"log"
-	"nam_0801/internal/model"
-	error2 "nam_0801/pkg/error"
-	"nam_0801/pkg/util/request"
-	"nam_0801/pkg/util/response"
+	"nam_0511/internal/model"
+	error2 "nam_0511/pkg/error"
+	"nam_0511/pkg/util/request"
+	"nam_0511/pkg/util/response"
 	"net/http"
 )
 
@@ -30,6 +30,14 @@ func InitUserHandler(r *chi.Mux, userSvc UserService) {
 	})
 }
 
+// @Summary createUser
+// @Description Login by email and password
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body model.CreateUserRequest true "Create user"
+// @Success 201
+// @Router /api/users [post]
 func (e *Endpoint) createUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

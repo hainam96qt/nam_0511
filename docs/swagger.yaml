@@ -1,0 +1,120 @@
+definitions:
+  model.CheckInRequest:
+    properties:
+      location:
+        type: string
+    type: object
+  model.CheckOutRequest:
+    properties:
+      index:
+        type: integer
+      location:
+        type: string
+    type: object
+  model.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/attendance:
+    post:
+      consumes:
+      - application/json
+      description: Login then check in
+      parameters:
+      - description: Check in
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.CheckInRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: checkIn
+      tags:
+      - Users
+  /api/attendance/check-out:
+    put:
+      consumes:
+      - application/json
+      description: Login then check in
+      parameters:
+      - description: Check out
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.CheckOutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: checkIn
+      tags:
+      - Users
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Login by email and password
+      parameters:
+      - description: Login
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LoginResponse'
+      summary: Login
+      tags:
+      - Users
+  /api/users:
+    post:
+      consumes:
+      - application/json
+      description: Login by email and password
+      parameters:
+      - description: Create user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: createUser
+      tags:
+      - Users
+swagger: "2.0"

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	db "nam_0801/internal/repo/dbmodel"
+	db "nam_0511/internal/repo/dbmodel"
 )
 
 type Repository struct {

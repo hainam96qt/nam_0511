@@ -3,7 +3,7 @@ package response
 import (
 	"encoding/json"
 	"errors"
-	error2 "nam_0801/pkg/error"
+	error2 "nam_0511/pkg/error"
 	"net/http"
 )
 
