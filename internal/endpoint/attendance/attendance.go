@@ -40,6 +40,14 @@ func InitAttendanceHandler(r *chi.Mux, authSvc AttendanceService) {
 	})
 }
 
+// @Summary checkIn
+// @Description Login then check in
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body model.CheckInRequest true "Check in"
+// @Success 201
+// @Router /api/attendance [post]
 func (e *Endpoint) checkIn(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -62,6 +70,14 @@ func (e *Endpoint) checkIn(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusCreated, nil)
 }
 
+// @Summary checkIn
+// @Description Login then check in
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body model.CheckOutRequest true "Check out"
+// @Success 200
+// @Router /api/attendance/check-out [put]
 func (e *Endpoint) checkOut(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -84,6 +100,7 @@ func (e *Endpoint) checkOut(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusCreated, nil)
 }
 
+// TODO ..swagger implement later..
 func (e *Endpoint) getListAttendance(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -106,6 +123,7 @@ func (e *Endpoint) getListAttendance(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusCreated, res)
 }
 
+// TODO ..swagger implement later..
 func (e *Endpoint) updateTime(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

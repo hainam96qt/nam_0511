@@ -30,6 +30,14 @@ func InitUserHandler(r *chi.Mux, userSvc UserService) {
 	})
 }
 
+// @Summary createUser
+// @Description Login by email and password
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body model.CreateUserRequest true "Create user"
+// @Success 201
+// @Router /api/users [post]
 func (e *Endpoint) createUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

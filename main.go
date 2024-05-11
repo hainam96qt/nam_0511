@@ -1,24 +1,9 @@
-// Package main provides a simple API.
-//
-// This is a sample Chi server.
-//
-//     Schemes: http
-//     BasePath: /
-//     Version: 1.0.0
-//
-//     Consumes:
-//     - application/json
-//
-//     Produces:
-//     - application/json
-//
-// swagger:meta
-
 package main
 
 import (
 	"context"
 	"errors"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	attendance3 "nam_0511/internal/endpoint/attendance"
 	authentication2 "nam_0511/internal/endpoint/authentication"
@@ -40,6 +25,8 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"nam_0511/pkg/db/postgres"
+
+	_ "nam_0511/docs"
 )
 
 func main() {
@@ -85,6 +72,10 @@ func main() {
 
 func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http.Server, err error) {
 	r := chi.NewRouter()
+
+	r.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8000/swagger/doc.json"),
+	))
 
 	// create endpoint here
 	r.Get("/healthCheck", func(w http.ResponseWriter, r *http.Request) {

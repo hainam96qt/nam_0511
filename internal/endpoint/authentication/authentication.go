@@ -30,13 +30,14 @@ func InitAuthenticationHandler(r *chi.Mux, authSvc AuthenticationService) {
 	})
 }
 
-// @Summary Lấy thông tin của một chi
-// @Description Trả về thông tin chi dựa trên ID
-// @ID get-chi-info
+// @Summary Login
+// @Description Login by email and password
+// @Tags Users
+// @Accept json
 // @Produce json
-// @Param id path int true "ID của chi"
+// @Param user body model.LoginRequest true "Login"
 // @Success 200 {object} model.LoginResponse
-// @Router /api/login [get]
+// @Router /api/login [post]
 func (e *Endpoint) login(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
