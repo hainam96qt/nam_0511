@@ -11,70 +11,70 @@
 				"type": "constructor"
 			},
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "employeeId",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "checkInTime",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "details",
-						"type": "string"
-					}
-				],
-				"name": "AttendanceRecorded",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "employeeId",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "index",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "newCheckInTime",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "newDetails",
-						"type": "string"
-					}
-				],
-				"name": "AttendanceUpdated",
-				"type": "event"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
 						"name": "_entity",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_employeeID",
+						"type": "uint256"
 					}
 				],
 				"name": "authorizeEntity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_employeeId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_checkInTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_details",
+						"type": "string"
+					}
+				],
+				"name": "checkIn",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_employeeId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_newCheckOutTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_newDetails",
+						"type": "string"
+					}
+				],
+				"name": "checkOut",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -108,7 +108,17 @@
 							},
 							{
 								"internalType": "uint256",
+								"name": "index",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "checkInTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "checkOutTime",
 								"type": "uint256"
 							},
 							{
@@ -144,7 +154,17 @@
 							},
 							{
 								"internalType": "uint256",
+								"name": "index",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "checkInTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "checkOutTime",
 								"type": "uint256"
 							},
 							{
@@ -159,29 +179,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_employeeId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_checkInTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "_details",
-						"type": "string"
-					}
-				],
-				"name": "recordAttendance",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -220,7 +217,7 @@
 						"type": "string"
 					}
 				],
-				"name": "updateAttendance",
+				"name": "updateCheckIn",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -239,7 +236,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"internal/repo/contracts/Fcontract.sol": "AttendanceContract"
+			"attendance.sol": "AttendanceContract"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -253,12 +250,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"internal/repo/contracts/Fcontract.sol": {
-			"keccak256": "0xbecf0656fe2ebf7d6d91042635d751a893ed41c10de928778049a93243412807",
+		"attendance.sol": {
+			"keccak256": "0xeb38057c2e1e7f4f3c90c39b1d0e2d97362fd949ad1bf2668e810760f5fc9070",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c8e9ad31689da3c89de1e032eec1312b90e353415f4f0846c1433a0b6d644eb5",
-				"dweb:/ipfs/QmSQ5ftweZA2PPeu3pdpZ6wpu3hPsgW9JHgoKeV6g7EN2s"
+				"bzz-raw://d4ed567495be9292d2eaa51087cf831687d2ff361eeb60af8a431e3125a96c54",
+				"dweb:/ipfs/QmaXgPerzUNdc9h3H41d4ZEmxusTnqMhpbRR1kx1wkwfGp"
 			]
 		}
 	},

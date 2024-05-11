@@ -7,16 +7,12 @@ contract AttendanceContract {
         uint employeeId;
         uint index;
         uint checkInTime;
+        uint checkOutTime;
         string details;
     }
 
-    uint256 private number = 1;
-
     mapping(uint => AttendanceRecord[]) private attendanceRecords;
     mapping(address => uint256) private authorizedEntities;
-
-    event AttendanceRecorded(uint indexed employeeId, uint checkInTime, string details);
-    event AttendanceUpdated(uint indexed employeeId, uint index, uint newCheckInTime, string newDetails);
 
     constructor() {
         authorizedEntities[msg.sender] = 1000000; // Deployer is authorized by default
@@ -29,15 +25,23 @@ contract AttendanceContract {
     }
 
     // truong hop la chinh chu user hoac admin thi dc tao
-    function recordAttendance(uint _employeeId, uint _checkInTime, string memory _details) public onlyAuthorized {
+    function checkIn(uint _employeeId, uint _checkInTime, string memory _details) public onlyAuthorized {
         if (authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]){
             return;
         }
 
         uint _index = attendanceRecords[_employeeId].length;
-        attendanceRecords[_employeeId].push(AttendanceRecord(_employeeId, _index, _checkInTime, _details));
+        attendanceRecords[_employeeId].push(AttendanceRecord(_employeeId, _index, _checkInTime, 0, _details));
+    }
 
-        emit AttendanceRecorded(_employeeId, _checkInTime, _details);
+    function checkOut(uint _employeeId, uint _index, uint _newCheckOutTime, string memory _newDetails) public onlyAuthorized {
+        require(_index < attendanceRecords[_employeeId].length, "Index out of bounds");
+        if (authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]){
+            return;
+        }
+
+        attendanceRecords[_employeeId][_index].checkOutTime = _newCheckOutTime;
+        attendanceRecords[_employeeId][_index].details =  string(abi.encodePacked(attendanceRecords[_employeeId][_index].details, ". checkout: ", _newDetails));
     }
 
     function getAttendanceByEmployeeId(uint _employeeId) public view returns (AttendanceRecord[] memory) {
@@ -55,16 +59,18 @@ contract AttendanceContract {
         return filteredRecords;
     }
 
-    function updateAttendance(uint _employeeId, uint _index, uint _newCheckInTime, string memory _newDetails) public onlyAuthorized {
+    function updateCheckIn(uint _employeeId, uint _index, uint _newCheckInTime, string memory _newDetails) public onlyAuthorized {
         require(_index < attendanceRecords[_employeeId].length, "Index out of bounds");
+        if (authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]){
+            return;
+        }
+
         attendanceRecords[_employeeId][_index].checkInTime = _newCheckInTime;
-        attendanceRecords[_employeeId][_index].details = _newDetails;
-        emit AttendanceUpdated(_employeeId, _index, _newCheckInTime, _newDetails);
+        attendanceRecords[_employeeId][_index].details =  string(abi.encodePacked(attendanceRecords[_employeeId][_index].details, ". update checkin reason : ", _newDetails));
     }
 
-    function authorizeEntity(address _entity) public onlyAuthorized {
-        number = number++;
-        authorizedEntities[_entity] = number;
+    function authorizeEntity(address _entity, uint _employeeID) public onlyAuthorized {
+        authorizedEntities[_entity] = _employeeID;
     }
 
     function revokeAuthorization(address _entity) public onlyAuthorized {
