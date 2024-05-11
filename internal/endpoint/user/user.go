@@ -17,7 +17,7 @@ type (
 	}
 
 	UserService interface {
-		CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.CreateUserResponse, error)
+		CreateUser(ctx context.Context, req *model.CreateUserRequest) error
 	}
 )
 
@@ -40,12 +40,12 @@ func (e *Endpoint) createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := e.userSvc.CreateUser(ctx, &req)
+	err := e.userSvc.CreateUser(ctx, &req)
 	if err != nil {
 		log.Printf("failed to create user: %s \n", err)
 		response.Error(w, err)
 		return
 	}
 
-	response.JSON(w, http.StatusCreated, res)
+	response.JSON(w, http.StatusCreated, nil)
 }

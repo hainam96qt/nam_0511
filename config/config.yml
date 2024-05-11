@@ -27,3 +27,7 @@ postgres:
   user: user
   password: password
 
+smartContract:
+  host:
+  smartContractID:
+  secretKey:

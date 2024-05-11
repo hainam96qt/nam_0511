@@ -15,8 +15,3 @@ type CreateUserRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
-
-type CreateUserResponse struct {
-	ID    int32  `json:"id"`
-	Token string `json:"token"`
-}

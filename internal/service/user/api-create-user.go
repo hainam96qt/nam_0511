@@ -7,10 +7,10 @@ import (
 	"nam_0801/pkg/util/password"
 )
 
-func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) (*model.CreateUserResponse, error) {
+func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) error {
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	newUser := db.CreateUserParams{
@@ -18,13 +18,10 @@ func (s *Service) CreateUser(ctx context.Context, req *model.CreateUserRequest) 
 		Email:    req.Email,
 		Password: hashPassword,
 	}
-	u, err := s.userRepo.CreateUser(ctx, newUser)
+	_, err = s.userRepo.CreateUser(ctx, newUser)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &model.CreateUserResponse{
-		ID:    u.ID,
-		Token: "123456", // TODO
-	}, nil
+	return nil
 }
