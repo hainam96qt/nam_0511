@@ -1,17 +1,19 @@
 package configs
 
 import (
+	"nam_0511/pkg/smartcontract"
 	"os"
 	"time"
 
 	"github.com/go-yaml/yaml"
 
-	"nam_0801/pkg/db/postgres"
+	"nam_0511/pkg/db/postgres"
 )
 
 type Config struct {
-	Postgres postgres.DatabaseConfig `yaml:"postgres"`
-	Server   Server                  `yaml:"server"`
+	Postgres      postgres.DatabaseConfig           `yaml:"postgres"`
+	Server        Server                            `yaml:"server"`
+	SmartContract smartcontract.SmartContractConfig `yaml:"smartContract"`
 }
 
 type Server struct {

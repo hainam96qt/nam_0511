@@ -2,23 +2,41 @@ package attendance
 
 import (
 	"context"
-	"database/sql"
-	db "nam_0801/internal/repo/dbmodel"
+	"math/big"
+	"nam_0511/internal/model"
+	"nam_0511/internal/repo/contracts"
+	configs "nam_0511/pkg/config"
+	"time"
 )
 
 type (
 	Service struct {
-		userRepo UserRepository
+		config configs.Config
+
+		attendanceRepo AttendanceRepository
 	}
 
 	AttendanceRepository interface {
-		CheckIn(ctx context.Context, user db.CreateUserParams) (db.User, error)
+		CheckIn(ctx context.Context, req *contracts.AttendanceContractAttendanceRecord) error
 	}
 )
 
-func NewUserService(ethereumConn *sql.DB, userRepo UserRepository) *Service {
+func NewAttendanceService(attendanceRepo AttendanceRepository) *Service {
 	return &Service{
-		DatabaseConn: DatabaseConn,
-		userRepo:     userRepo,
+		attendanceRepo: attendanceRepo,
 	}
+}
+
+func (s *Service) CheckIn(ctx context.Context, userID int64, req *model.CheckInRequest) error {
+	var attendance = contracts.AttendanceContractAttendanceRecord{
+		EmployeeId:  big.NewInt(userID),
+		CheckInTime: big.NewInt(time.Now().Unix()),
+		Details:     req.Location,
+	}
+	err := s.attendanceRepo.CheckIn(ctx, &attendance)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

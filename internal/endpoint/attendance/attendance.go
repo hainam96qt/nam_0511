@@ -4,10 +4,11 @@ import (
 	"context"
 	"github.com/go-chi/chi/v5"
 	"log"
-	"nam_0801/internal/model"
-	error2 "nam_0801/pkg/error"
-	"nam_0801/pkg/util/request"
-	"nam_0801/pkg/util/response"
+	"nam_0511/internal/model"
+	error2 "nam_0511/pkg/error"
+	"nam_0511/pkg/midleware"
+	"nam_0511/pkg/util/request"
+	"nam_0511/pkg/util/response"
 	"net/http"
 )
 
@@ -17,7 +18,7 @@ type (
 	}
 
 	AttendanceService interface {
-		CheckIn(ctx context.Context, req *model.CheckInRequest) error
+		CheckIn(ctx context.Context, userID int64, req *model.CheckInRequest) error
 		//UpdateTime(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse2, error)
 		//GetListAttendanceByUserID(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse2, error)
 	}
@@ -28,6 +29,8 @@ func InitAttendanceHandler(r *chi.Mux, authSvc AttendanceService) {
 		authSvc: authSvc,
 	}
 	r.Route("/api/attendance", func(r chi.Router) {
+		r.Use(midleware.Auth.ValidateRoleUser)
+
 		r.Post("/check-in", authEndpoint.checkIn)
 		//r.Post("/update-time", authEndpoint.updateTime)
 		//r.Get("/", authEndpoint.getListAttendance)
@@ -37,21 +40,23 @@ func InitAttendanceHandler(r *chi.Mux, authSvc AttendanceService) {
 func (e *Endpoint) checkIn(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req model.LoginRequest
+	var req model.CheckInRequest
 	if err := request.DecodeJSON(ctx, r.Body, &req); err != nil {
 		log.Printf("read request body error: %s \n", err)
 		response.Error(w, error2.NewXError(err.Error(), http.StatusBadRequest))
 		return
 	}
 
-	res, err := e.authSvc.CheckIn(ctx, &req)
+	userIDCtx := ctx.Value("UserID").(int64)
+
+	err := e.authSvc.CheckIn(ctx, userIDCtx, &req)
 	if err != nil {
 		log.Printf("failed to check in : %s \n", err)
 		response.Error(w, err)
 		return
 	}
 
-	response.JSON(w, http.StatusCreated, res)
+	response.JSON(w, http.StatusCreated, nil)
 }
 
 //

@@ -2,8 +2,8 @@ package midleware
 
 import (
 	"context"
-	"nam_0801/internal/model"
-	configs "nam_0801/pkg/config"
+	"nam_0511/internal/model"
+	configs "nam_0511/pkg/config"
 	"net/http"
 	"strings"
 

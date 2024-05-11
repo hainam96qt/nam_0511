@@ -4,13 +4,17 @@ import (
 	"context"
 	"errors"
 	"log"
-	authentication2 "nam_0801/internal/endpoint/authentication"
-	user3 "nam_0801/internal/endpoint/user"
-	"nam_0801/internal/repo/repo/user"
-	"nam_0801/internal/service/authentication"
-	user2 "nam_0801/internal/service/user"
-	"nam_0801/pkg/config"
-	"nam_0801/pkg/midleware"
+	attendance3 "nam_0511/internal/endpoint/attendance"
+	authentication2 "nam_0511/internal/endpoint/authentication"
+	user3 "nam_0511/internal/endpoint/user"
+	"nam_0511/internal/repo/repo/attendance"
+	"nam_0511/internal/repo/repo/user"
+	attendance2 "nam_0511/internal/service/attendance"
+	"nam_0511/internal/service/authentication"
+	user2 "nam_0511/internal/service/user"
+	"nam_0511/pkg/config"
+	"nam_0511/pkg/midleware"
+	"nam_0511/pkg/smartcontract"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,7 +23,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"nam_0801/pkg/db/postgres"
+	"nam_0511/pkg/db/postgres"
 )
 
 func main() {
@@ -77,19 +81,28 @@ func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http
 		return
 	}
 
+	smartContractConn, err := smartcontract.ConnectSmartContract(conf.SmartContract)
+	if err != nil {
+		log.Panicf("failed to connect ethereum:: %s \n", err)
+		return
+	}
+
 	midleware.Auth.Cfg = conf.Server.Token
 
 	// repository
 	userRepo := user.NewPostgresRepository(dbConn)
+	attendanceRepo := attendance.NewPostgresRepository(smartContractConn, conf.SmartContract)
 
 	// service
 	userService := user2.NewUserService(dbConn, userRepo)
 	authService := authentication.NewAuthenticationService(dbConn, conf.Server.Token, userRepo)
 
+	attendanceService := attendance2.NewAttendanceService(attendanceRepo)
+
 	// handler
 	user3.InitUserHandler(r, userService)
 	authentication2.InitAuthenticationHandler(r, authService)
-
+	attendance3.InitAttendanceHandler(r, attendanceService)
 	return &http.Server{
 		Addr:         conf.Server.Address,
 		ReadTimeout:  conf.Server.ReadTimeout,

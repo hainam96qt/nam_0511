@@ -4,10 +4,10 @@ import (
 	"context"
 	"github.com/go-chi/chi/v5"
 	"log"
-	"nam_0801/internal/model"
-	error2 "nam_0801/pkg/error"
-	"nam_0801/pkg/util/request"
-	"nam_0801/pkg/util/response"
+	"nam_0511/internal/model"
+	error2 "nam_0511/pkg/error"
+	"nam_0511/pkg/util/request"
+	"nam_0511/pkg/util/response"
 	"net/http"
 )
 

@@ -28,6 +28,6 @@ postgres:
   password: password
 
 smartContract:
-  host:
-  smartContractID:
-  secretKey:
+  host: "http://127.0.0.1:8545"
+  contractAddress: "0x157Cd8d123d8631daC88a3370662C7d14Eb3e96b"
+  privateKey: "ee3239f6b5d106d4946aceccf083a730fd4c9d62cc9afca88fec9913de4b75f7"
