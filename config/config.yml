@@ -21,9 +21,13 @@ server:
     timeToExpired: "6000s"
 
 postgres:
-  host: postgres-db
+  host: localhost
   port: 5432
   database: namdb
   user: user
   password: password
 
+smartContract:
+  host:
+  smartContractID:
+  secretKey:
