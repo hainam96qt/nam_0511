@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-func (s *Service) GetListAttendanceByUserID(ctx context.Context, userID int64) (*model.GetListAttendanceByUserIDResponse, error) {
-	data, err := s.attendanceRepo.GetListAttendanceByUserID(ctx, userID)
+func (s *Service) GetListAttendanceByUserID(ctx context.Context, userID int64, from *time.Time, to *time.Time) (*model.GetListAttendanceByUserIDResponse, error) {
+	data, err := s.attendanceRepo.GetListAttendanceByUserID(ctx, userID, from, to)
 	if err != nil {
 		return nil, err
 	}

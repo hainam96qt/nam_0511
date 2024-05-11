@@ -10,6 +10,7 @@ import (
 	"nam_0511/pkg/util/request"
 	"nam_0511/pkg/util/response"
 	"net/http"
+	"time"
 )
 
 type (
@@ -20,7 +21,7 @@ type (
 	AttendanceService interface {
 		CheckIn(ctx context.Context, userID int64, req *model.CheckInRequest) error
 		CheckOut(ctx context.Context, userID int64, req *model.CheckOutRequest) error
-		GetListAttendanceByUserID(ctx context.Context, userId int64) (*model.GetListAttendanceByUserIDResponse, error)
+		GetListAttendanceByUserID(ctx context.Context, userID int64, from *time.Time, to *time.Time) (*model.GetListAttendanceByUserIDResponse, error)
 		UpdateCheckInTime(ctx context.Context, userID int64, req *model.UpdateTimeAttendanceRequest) error
 	}
 )
@@ -104,7 +105,7 @@ func (e *Endpoint) checkOut(w http.ResponseWriter, r *http.Request) {
 func (e *Endpoint) getListAttendance(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req model.LoginRequest
+	var req model.GetListAttendanceByUserIDRequet
 	if err := request.DecodeJSON(ctx, r.Body, &req); err != nil {
 		log.Printf("read request body error: %s \n", err)
 		response.Error(w, error2.NewXError(err.Error(), http.StatusBadRequest))
@@ -113,7 +114,7 @@ func (e *Endpoint) getListAttendance(w http.ResponseWriter, r *http.Request) {
 
 	userIDCtx := int64(ctx.Value("UserID").(int32))
 
-	res, err := e.attendanceSvc.GetListAttendanceByUserID(ctx, userIDCtx)
+	res, err := e.attendanceSvc.GetListAttendanceByUserID(ctx, userIDCtx, req.From, req.To)
 	if err != nil {
 		log.Printf("failed to get list attendance : %s \n", err)
 		response.Error(w, err)

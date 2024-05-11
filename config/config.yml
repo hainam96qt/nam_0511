@@ -29,6 +29,6 @@ postgres:
 
 smartContract:
   host: "http://127.0.0.1:8545"
-  contractAddress: "0x24eF67C1a1b18F9F8D07999d39D8De9bA3BAE1Db"
-  privateKey: "894743a6336cd65127f3131d30b7d3d83a06fa7d9b7ac83eca38375d1bc8655e"
+  contractAddress: "0xC71310988e50927AfCA4e8c59333eCa46959a7ED"
+  privateKey: "e077e5186405e47b50db3544b4762690385a3f60492bca028df83c3918fdfe1d"
   chanID: 1337

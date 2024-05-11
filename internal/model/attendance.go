@@ -11,6 +11,11 @@ type CheckOutRequest struct {
 	Location string `json:"location"`
 }
 
+type GetListAttendanceByUserIDRequet struct {
+	From *time.Time `json:"from"`
+	To   *time.Time `json:"to"`
+}
+
 type GetListAttendanceByUserIDResponse struct {
 	Attendances []Attendance `json:"attendances"`
 }

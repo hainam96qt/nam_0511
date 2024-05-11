@@ -10,6 +10,7 @@ import (
 	"math/big"
 	"nam_0511/internal/repo/contracts/attendance"
 	"nam_0511/pkg/smartcontract"
+	"time"
 )
 
 type Repository struct {
@@ -86,10 +87,10 @@ func (r *Repository) CheckOut(ctx context.Context, req *contracts.AttendanceCont
 	return nil
 }
 
-func (r *Repository) GetListAttendanceByUserID(ctx context.Context, userID int64) ([]contracts.AttendanceContractAttendanceRecord, error) {
+func (r *Repository) GetListAttendanceByUserID(ctx context.Context, userID int64, from *time.Time, to *time.Time) (result []contracts.AttendanceContractAttendanceRecord, err error) {
 	contractAddress := common.HexToAddress(r.config.ContractAddress)
 
-	_, err := r.ethClient.CodeAt(context.Background(), contractAddress, nil)
+	_, err = r.ethClient.CodeAt(context.Background(), contractAddress, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -98,12 +99,20 @@ func (r *Repository) GetListAttendanceByUserID(ctx context.Context, userID int64
 	if err != nil {
 		return nil, err
 	}
-	data, err := contract.GetAttendanceByEmployeeId(nil, big.NewInt(userID))
-	if err != nil {
-		log.Fatal(err)
+
+	if from != nil && to != nil {
+		result, err = contract.GetAttendanceByDateRange(nil, big.NewInt(userID), big.NewInt(from.Unix()), big.NewInt(to.Unix()))
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		result, err = contract.GetAttendanceByEmployeeId(nil, big.NewInt(userID))
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
-	return data, nil
+	return result, nil
 }
 
 func (r *Repository) UpdateAttendanceTime(ctx context.Context, c contracts.AttendanceContractAttendanceRecord) error {
