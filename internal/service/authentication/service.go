@@ -34,7 +34,7 @@ func NewAuthenticationService(DatabaseConn *sql.DB, cfg configs.Token, userRepo 
 	}
 }
 
-func (s *Service) Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse2, error) {
+func (s *Service) Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse, error) {
 	user, err := s.userRepo.GetUserByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (s *Service) Login(ctx context.Context, req *model.LoginRequest) (*model.Lo
 	if err != nil {
 		return nil, err
 	}
-	return &model.LoginResponse2{Token: token}, nil
+	return &model.LoginResponse{Token: token}, nil
 }
 
 func (s *Service) generateJWT(userID int32) (string, error) {

@@ -17,7 +17,7 @@ type (
 	}
 
 	AuthenticationService interface {
-		Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse2, error)
+		Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse, error)
 	}
 )
 
@@ -30,6 +30,13 @@ func InitAuthenticationHandler(r *chi.Mux, authSvc AuthenticationService) {
 	})
 }
 
+// @Summary Lấy thông tin của một chi
+// @Description Trả về thông tin chi dựa trên ID
+// @ID get-chi-info
+// @Produce json
+// @Param id path int true "ID của chi"
+// @Success 200 {object} model.LoginResponse
+// @Router /api/login [get]
 func (e *Endpoint) login(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

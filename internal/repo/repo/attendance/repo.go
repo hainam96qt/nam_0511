@@ -2,7 +2,6 @@ package attendance
 
 import (
 	"context"
-	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -11,7 +10,6 @@ import (
 	"math/big"
 	"nam_0511/internal/repo/contracts/attendance"
 	"nam_0511/pkg/smartcontract"
-	"nam_0511/pkg/util/random"
 )
 
 type Repository struct {
@@ -140,43 +138,4 @@ func (r *Repository) UpdateAttendanceTime(ctx context.Context, c contracts.Atten
 	_ = tx
 
 	return nil
-}
-
-func (r *Repository) AuthorizeEntity(ctx context.Context, userID int) (string, error) {
-	contractAddress := common.HexToAddress(r.config.ContractAddress)
-
-	contract, err := contracts.NewContracts(contractAddress, r.ethClient)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	userPrivateHexKey, err := random.GenerateHex64()
-	if err != nil {
-		return "", err
-	}
-
-	userPrivateKey, err := crypto.HexToECDSA(userPrivateHexKey)
-	if err != nil {
-		return "", err
-	}
-
-	privateKey, err := crypto.HexToECDSA(r.config.PrivateKey)
-	if err != nil {
-		log.Fatal("private key not found", err)
-	}
-
-	sender := crypto.PubkeyToAddress(userPrivateKey.PublicKey)
-
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1337))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	tx, err := contract.AuthorizeEntity(auth, sender, big.NewInt(int64(userID)))
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(tx.Data())
-
-	return userPrivateHexKey, err
 }

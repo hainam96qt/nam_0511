@@ -1,0 +1,28 @@
+definitions:
+  model.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/login:
+    get:
+      description: Trả về thông tin chi dựa trên ID
+      operationId: get-chi-info
+      parameters:
+      - description: ID của chi
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LoginResponse'
+      summary: Lấy thông tin của một chi
+swagger: "2.0"

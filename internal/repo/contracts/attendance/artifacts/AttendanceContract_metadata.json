@@ -251,11 +251,11 @@
 	},
 	"sources": {
 		"attendance.sol": {
-			"keccak256": "0xeb38057c2e1e7f4f3c90c39b1d0e2d97362fd949ad1bf2668e810760f5fc9070",
+			"keccak256": "0xfd274bf6b108f6dd82a1d9d33db3ea8d1a01490f59065cc6dea11ed38a5dd7b1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d4ed567495be9292d2eaa51087cf831687d2ff361eeb60af8a431e3125a96c54",
-				"dweb:/ipfs/QmaXgPerzUNdc9h3H41d4ZEmxusTnqMhpbRR1kx1wkwfGp"
+				"bzz-raw://6438b5a0bcc8451c8780f6219aee1ad1da785819fce139cd213fd05d64398950",
+				"dweb:/ipfs/QmfX1hHdQdbTDZ9WgqTrgoYAujMZZr1z9sTnAAT84y9PwN"
 			]
 		}
 	},

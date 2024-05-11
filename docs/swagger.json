@@ -1,0 +1,45 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/login": {
+            "get": {
+                "description": "Trả về thông tin chi dựa trên ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Lấy thông tin của một chi",
+                "operationId": "get-chi-info",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID của chi",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

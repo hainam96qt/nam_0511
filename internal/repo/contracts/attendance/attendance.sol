@@ -26,9 +26,7 @@ contract AttendanceContract {
 
     // truong hop la chinh chu user hoac admin thi dc tao
     function checkIn(uint _employeeId, uint _checkInTime, string memory _details) public onlyAuthorized {
-        if (authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]){
-            return;
-        }
+        require( !(authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]), "Unauthorized access");
 
         uint _index = attendanceRecords[_employeeId].length;
         attendanceRecords[_employeeId].push(AttendanceRecord(_employeeId, _index, _checkInTime, 0, _details));
@@ -36,9 +34,7 @@ contract AttendanceContract {
 
     function checkOut(uint _employeeId, uint _index, uint _newCheckOutTime, string memory _newDetails) public onlyAuthorized {
         require(_index < attendanceRecords[_employeeId].length, "Index out of bounds");
-        if (authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]){
-            return;
-        }
+        require( !(authorizedEntities[msg.sender] != 1000000  && _employeeId != authorizedEntities[msg.sender]), "Unauthorized access");
 
         attendanceRecords[_employeeId][_index].checkOutTime = _newCheckOutTime;
         attendanceRecords[_employeeId][_index].details =  string(abi.encodePacked(attendanceRecords[_employeeId][_index].details, ". checkout: ", _newDetails));
